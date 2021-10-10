@@ -36,15 +36,16 @@ def english_to_french( english_text ):
     """
     Returns the french translation of the englishText provided
     """
-    translation = TRANSLATOR.translate(
-        text = f'{ english_text }',
-        model_id = 'en-fr'
-        ).get_result()
     french_text = ""
-    if translation is not None \
-        and 'translations' in translation \
-        and len( translation[ 'translations' ] ) > 0:
-        french_text = translation[ 'translations' ][0][ 'translation' ]
+    if english_text is not None:
+        translation = TRANSLATOR.translate(
+            text = f'{ english_text }',
+            model_id = 'en-fr'
+            ).get_result()
+        if translation is not None \
+            and 'translations' in translation \
+            and len( translation[ 'translations' ] ) > 0:
+            french_text = translation[ 'translations' ][0][ 'translation' ]
     return french_text
 
 # originally frenchToEnglish( frenchText ) but pylint wants it snake_case
@@ -52,15 +53,16 @@ def french_to_english( french_text ):
     """
     Returns the english translation of the french_text provided
     """
-    translation = TRANSLATOR.translate(
-        text = f'{ french_text }',
-        model_id = 'fr-en'
-        ).get_result()
     english_text = ""
-    if translation is not None \
-        and 'translations' in translation \
-        and len( translation[ 'translations' ] ) > 0:
-        english_text = translation[ 'translations' ][0][ 'translation' ]
+    if french_text is not None:
+        translation = TRANSLATOR.translate(
+            text = f'{ french_text }',
+            model_id = 'fr-en'
+            ).get_result()
+        if translation is not None \
+            and 'translations' in translation \
+            and len( translation[ 'translations' ] ) > 0:
+            english_text = translation[ 'translations' ][0][ 'translation' ]
     return english_text
 
 def main():
