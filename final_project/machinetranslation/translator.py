@@ -6,8 +6,6 @@ A module that will allow EN <-> FR text translations.
 """
 
 import os
-import json
-import requests
 from ibm_watson import LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from dotenv import load_dotenv
@@ -38,14 +36,39 @@ def english_to_french( english_text ):
     """
     Returns the french translation of the englishText provided
     """
-    french_text = "le blah"
+    translation = TRANSLATOR.translate(
+        text = f'{ english_text }',
+        model_id = 'en-fr'
+        ).get_result()
+    french_text = ""
+    if translation is not None \
+        and 'translations' in translation \
+        and len( translation[ 'translations' ] ) > 0:
+        french_text = translation[ 'translations' ][0][ 'translation' ]
     return french_text
+
+# originally frenchToEnglish( frenchText ) but pylint wants it snake_case
+def french_to_english( french_text ):
+    """
+    Returns the english translation of the french_text provided
+    """
+    translation = TRANSLATOR.translate(
+        text = f'{ french_text }',
+        model_id = 'fr-en'
+        ).get_result()
+    english_text = ""
+    if translation is not None \
+        and 'translations' in translation \
+        and len( translation[ 'translations' ] ) > 0:
+        english_text = translation[ 'translations' ][0][ 'translation' ]
+    return english_text
 
 def main():
     """
     Main function entry point
     """
-    print( str( TRANSLATOR ) )
+    print( english_to_french( "Hello World!" ) )
+    print( french_to_english( "Bonjour le monde!" ) )
 
 if __name__ == "__main__":
     main()
